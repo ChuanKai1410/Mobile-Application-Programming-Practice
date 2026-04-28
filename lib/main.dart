@@ -25,7 +25,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (_) => SpaghettiShopAppState(),
-      child: const MyApp(clientId: clientId),
+      child: MyApp(clientId: clientId),
     ),
   );
 }
@@ -118,14 +118,14 @@ class SpaghettiShopAppState extends ChangeNotifier {
   }
 
   int get totalCartItems {
-    return _cart.fold(0, (sum, item) => sum + item.amount);
+    return _cart.fold(0, (total, item) => total + item.amount);
   }
 
   double get totalCartPrice {
-    return _cart.fold(0, (sum, item) {
+    return _cart.fold(0, (total, item) {
       final priceStr = item.dish.price.replaceAll('RM', '');
       final price = double.tryParse(priceStr) ?? 0.0;
-      return sum + (price * item.amount);
+      return total + (price * item.amount);
     });
   }
 
