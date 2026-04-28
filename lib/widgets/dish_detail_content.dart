@@ -59,7 +59,7 @@ class _DishDetailContentState extends State<DishDetailContent> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.14),
+                    color: Colors.black.withValues(alpha: 0.14),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -99,7 +99,7 @@ class _DishDetailContentState extends State<DishDetailContent> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.14),
+            color: Colors.black.withValues(alpha: 0.14),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -151,7 +151,7 @@ class _DishDetailContentState extends State<DishDetailContent> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withValues(alpha: 0.2),
             blurRadius: 6,
           ),
         ],
@@ -210,7 +210,7 @@ class _DishDetailContentState extends State<DishDetailContent> {
                 width: 3,
               ),
             ),
-            color: isSelected ? Colors.orange.withOpacity(0.1) : Colors.transparent,
+            color: isSelected ? Colors.orange.withValues(alpha: 0.1) : Colors.transparent,
           ),
           child: Center(
             child: Text(
