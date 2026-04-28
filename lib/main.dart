@@ -7,8 +7,11 @@ import 'spicy.dart';
 import 'creamy_garlic.dart';
 import 'tomato.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'firebase_options.dart';
 import 'auth_gate.dart';
+
+const clientId = '75890959312-t7afplcua5hkkrldghsdd7nt7ej0bi1q.apps.googleusercontent.com';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +19,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (_) => SpaghettiShopAppState(),
-      child: const MyApp(clientId: ''),
+      child: const MyApp(clientId: clientId),
     ),
   );
 }
@@ -110,8 +113,12 @@ class MyApp extends StatelessWidget {
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            foregroundColor: const Color(0xFFD32F2F),
-            side: const BorderSide(color: Color(0xFFD32F2F)),
+            foregroundColor: Colors.black87,
+            backgroundColor: Colors.white,
+            side: const BorderSide(color: Colors.grey),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         ),
         textButtonTheme: TextButtonThemeData(
@@ -176,11 +183,26 @@ class HomeScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => ProfileScreen(
-                  providers: [EmailAuthProvider()],
+                  appBar: AppBar(
+                    title: const Text('User Profile'),
+                  ),
+                  providers: [
+                    EmailAuthProvider(),
+                    GoogleProvider(clientId: "75890959312-qrvet5ognpqo1nf9in4b3e81hmuai5d7.apps.googleusercontent.com"),
+                  ],
                   actions: [
                     SignedOutAction((context) {
                       Navigator.of(context).pop();
                     }),
+                  ],
+                  children: const [
+                    Divider(),
+                    Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Center(
+                        child: Icon(Icons.restaurant, size: 80, color: Color(0xFFD32F2F)),
+                      ),
+                    ),
                   ],
                 )),
               );
