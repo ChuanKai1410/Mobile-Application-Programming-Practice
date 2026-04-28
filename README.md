@@ -1,3 +1,4 @@
+[![Flutter CI/CD](https://github.com/ChuanKai1410/Mobile-Application-Programming-Practice/actions/workflows/flutter-ci.yml/badge.svg)](https://github.com/ChuanKai1410/Mobile-Application-Programming-Practice/actions/workflows/flutter-ci.yml)
 # Pasta Shop Application 🍝
 
 ## Project Overview
