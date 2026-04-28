@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart'; 
 import 'package:provider/provider.dart';
 import 'models/spaghetti_dish.dart';
+import 'models/cart_item.dart';
 import 'aglio_olio.dart';
 import 'spicy.dart';
 import 'creamy_garlic.dart';
 import 'tomato.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider, AuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'firebase_options.dart';
 import 'auth_gate.dart';
-import 'responsive_auth_wrapper.dart';
+import 'widgets/cart_widget.dart';
 
-const clientId = '75890959312-t7afplcua5hkkrldghsdd7nt7ej0bi1q.apps.googleusercontent.com';
+String get clientId => dotenv.env['GOOGLE_CLIENT_ID']!;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     ChangeNotifierProvider(
@@ -81,6 +85,68 @@ class SpaghettiShopAppState extends ChangeNotifier {
   void selectDish(SpaghettiDish dish) {
     _selectedDish = dish;
     notifyListeners();
+  }
+
+  // Cart State
+  final List<CartItem> _cart = [];
+  List<CartItem> get cart => _cart;
+
+  void addToCart(SpaghettiDish dish) {
+    int index = _cart.indexWhere((item) => item.dish.name == dish.name);
+    if (index >= 0) {
+      _cart[index].amount++;
+    } else {
+      _cart.add(CartItem(dish: dish, amount: 1));
+    }
+    notifyListeners();
+  }
+
+  void removeFromCart(SpaghettiDish dish) {
+    int index = _cart.indexWhere((item) => item.dish.name == dish.name);
+    if (index >= 0) {
+      _cart[index].amount--;
+      if (_cart[index].amount <= 0) {
+        _cart.removeAt(index);
+      }
+      notifyListeners();
+    }
+  }
+
+  void clearCart() {
+    _cart.clear();
+    notifyListeners();
+  }
+
+  int get totalCartItems {
+    return _cart.fold(0, (sum, item) => sum + item.amount);
+  }
+
+  double get totalCartPrice {
+    return _cart.fold(0, (sum, item) {
+      final priceStr = item.dish.price.replaceAll('RM', '');
+      final price = double.tryParse(priceStr) ?? 0.0;
+      return sum + (price * item.amount);
+    });
+  }
+
+  Future<void> checkoutOrder() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null || _cart.isEmpty) return;
+
+    final orderData = {
+      'userId': user.uid,
+      'userEmail': user.email,
+      'createdAt': FieldValue.serverTimestamp(),
+      'totalPrice': totalCartPrice,
+      'items': _cart.map((item) => {
+        'dishName': item.dish.name,
+        'amount': item.amount,
+        'price': item.dish.price,
+      }).toList(),
+    };
+
+    await FirebaseFirestore.instance.collection('orders').add(orderData);
+    clearCart();
   }
 }
 
@@ -192,6 +258,7 @@ class HomeScreen extends StatelessWidget {
           letterSpacing: 0.5,
         ),
         actions: [
+          const CartBadgeWidget(),
           IconButton(
             icon: const Icon(Icons.person, color: Colors.white),
             onPressed: () {

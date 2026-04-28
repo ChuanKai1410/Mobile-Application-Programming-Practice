@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'main.dart';
 import 'models/dish_details.dart';
 import 'widgets/dish_detail_content.dart';
+import 'widgets/cart_widget.dart';
 
 class SpicyScreen extends StatelessWidget {
   const SpicyScreen({super.key});
@@ -31,6 +32,7 @@ class SpicyScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: const [CartBadgeWidget()],
       ),
       body: Container(
         decoration: const BoxDecoration(

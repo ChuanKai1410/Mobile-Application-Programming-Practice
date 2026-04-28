@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
 import '../models/spaghetti_dish.dart';
 import 'dish_widgets.dart';
 
@@ -272,6 +274,24 @@ class _DishDetailContentState extends State<DishDetailContent> {
           ratings(widget.dish),
           const SizedBox(height: 16),
           iconList(widget.dish),
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: () {
+              context.read<SpaghettiShopAppState>().addToCart(widget.dish);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${widget.dish.name} added to cart!'),
+                  duration: const Duration(seconds: 1),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+            icon: const Icon(Icons.add_shopping_cart),
+            label: const Text('Add to Cart', style: TextStyle(fontSize: 18)),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+            ),
+          ),
         ],
       ),
     );

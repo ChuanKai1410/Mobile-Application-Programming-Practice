@@ -22,7 +22,7 @@ class AuthGate extends StatelessWidget {
             child: SignInScreen(
               providers: [
                 EmailAuthProvider(),
-                GoogleProvider(clientId: "75890959312-qrvet5ognpqo1nf9in4b3e81hmuai5d7.apps.googleusercontent.com"),
+                GoogleProvider(clientId: clientId),
               ],
               actions: [
                 ForgotPasswordAction((context, email) {
