@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "75890959312",
+    "project_id": "pasta-shop-5ca1c",
+    "storage_bucket": "pasta-shop-5ca1c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75890959312:android:bee70948bcba065dffcfd5",
+        "android_client_info": {
+          "package_name": "com.example.layout2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC54Fhuh3-4wYVfa1JiRazHwTPNl1dRKYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

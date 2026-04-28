@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart'; 
 import 'package:provider/provider.dart';
 import 'models/spaghetti_dish.dart';
 import 'aglio_olio.dart';
 import 'spicy.dart';
 import 'creamy_garlic.dart';
 import 'tomato.dart';
-import 'auth/auth_provider.dart';
-import 'auth/login_page.dart';
-import 'auth/profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'firebase_options.dart';
+import 'auth_gate.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => SpaghettiShopAppState()),
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ],
-      child: const MyApp(),
+    ChangeNotifierProvider(
+      create: (_) => SpaghettiShopAppState(),
+      child: const MyApp(clientId: ''),
     ),
   );
 }
@@ -80,21 +81,17 @@ class SpaghettiShopAppState extends ChangeNotifier {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.clientId});
+
+  final String clientId;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Spaghetti Restaurant',
       theme: ThemeData(
-        primarySwatch: Colors.red,
-        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: Consumer<AuthProvider>(
-        builder: (context, auth, _) {
-          return auth.isLoggedIn ? const HomeScreen() : const LoginPage();
-        },
-      ),
+      home: AuthGate(clientId: clientId),
     );
   }
 }
@@ -143,7 +140,14 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const ProfilePage()),
+                MaterialPageRoute(builder: (_) => ProfileScreen(
+                  providers: [EmailAuthProvider()],
+                  actions: [
+                    SignedOutAction((context) {
+                      Navigator.of(context).pop();
+                    }),
+                  ],
+                )),
               );
             },
           ),
