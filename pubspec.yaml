@@ -1,0 +1,25 @@
+name: layout2
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/spaghetti_aglio_olio.png
+    - images/spicy_pasta.png
+    - images/creamy_garlic_pasta.png
+    - images/tomato_spaghetti.png
