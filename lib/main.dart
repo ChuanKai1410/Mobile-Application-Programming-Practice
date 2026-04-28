@@ -6,10 +6,12 @@ import 'aglio_olio.dart';
 import 'spicy.dart';
 import 'creamy_garlic.dart';
 import 'tomato.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider, AuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'firebase_options.dart';
 import 'auth_gate.dart';
+import 'responsive_auth_wrapper.dart';
 
 const clientId = '75890959312-t7afplcua5hkkrldghsdd7nt7ej0bi1q.apps.googleusercontent.com';
 
@@ -106,9 +108,11 @@ class MyApp extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFD32F2F),
             foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
             ),
+            elevation: 2,
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
@@ -126,10 +130,21 @@ class MyApp extends StatelessWidget {
             foregroundColor: const Color(0xFFD32F2F),
           ),
         ),
-        inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder(),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.grey.shade100,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFFD32F2F), width: 2),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Colors.redAccent, width: 2),
           ),
         ),
       ),
@@ -180,30 +195,109 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.person, color: Colors.white),
             onPressed: () {
+              final user = FirebaseAuth.instance.currentUser;
+              final linkedProviders = user?.providerData.map((e) => e.providerId).toList() ?? [];
+              
+              final activeProviders = <AuthProvider>[];
+              if (linkedProviders.contains('password')) {
+                activeProviders.add(EmailAuthProvider());
+              }
+              if (linkedProviders.contains('google.com')) {
+                activeProviders.add(GoogleProvider(clientId: clientId));
+              }
+
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => ProfileScreen(
-                  appBar: AppBar(
-                    title: const Text('User Profile'),
-                  ),
-                  providers: [
-                    EmailAuthProvider(),
-                    GoogleProvider(clientId: "75890959312-qrvet5ognpqo1nf9in4b3e81hmuai5d7.apps.googleusercontent.com"),
-                  ],
-                  actions: [
-                    SignedOutAction((context) {
-                      Navigator.of(context).pop();
-                    }),
-                  ],
-                  children: const [
-                    Divider(),
-                    Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Center(
-                        child: Icon(Icons.restaurant, size: 80, color: Color(0xFFD32F2F)),
+                MaterialPageRoute(builder: (_) => Theme(
+                  data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.transparent),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Color(0xFFFFF3E0), Color(0xFFFFE0B2)],
                       ),
                     ),
-                  ],
+                    child: ProfileScreen(
+                      appBar: AppBar(
+                        title: const Text('User Profile'),
+                        backgroundColor: const Color(0xFFD32F2F),
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                      ),
+                      providers: const [], // Empty to disable the built-in editable Linked Accounts
+                      actions: [
+                        SignedOutAction((context) {
+                          Navigator.of(context).pop();
+                        }),
+                      ],
+                      children: [
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Sign-in methods',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: linkedProviders.map((provider) {
+                            if (provider == 'google.com') {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12.0),
+                                child: Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Colors.grey.shade300),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'G',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else if (provider == 'password') {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12.0),
+                                child: Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Colors.grey.shade300),
+                                  ),
+                                  child: const Center(
+                                    child: Icon(Icons.email, color: Color(0xFFD32F2F), size: 24),
+                                  ),
+                                ),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 32),
+                        const Divider(),
+                        const Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Center(
+                            child: Icon(Icons.restaurant, size: 80, color: Color(0xFFD32F2F)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 )),
               );
             },
