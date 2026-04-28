@@ -1,0 +1,33 @@
+name: Flutter CI/CD
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze project source
+        run: flutter analyze
+
+      # Uncomment the following step once you add tests to the `test/` directory.
+      # - name: Run tests
+      #   run: flutter test
+
+      - name: Build Android APK
+        run: flutter build apk --debug
