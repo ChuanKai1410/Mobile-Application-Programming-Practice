@@ -5,11 +5,17 @@ import 'aglio_olio.dart';
 import 'spicy.dart';
 import 'creamy_garlic.dart';
 import 'tomato.dart';
+import 'auth/auth_provider.dart';
+import 'auth/login_page.dart';
+import 'auth/profile_page.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => SpaghettiShopAppState(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SpaghettiShopAppState()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -84,7 +90,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: Consumer<AuthProvider>(
+        builder: (context, auth, _) {
+          return auth.isLoggedIn ? const HomeScreen() : const LoginPage();
+        },
+      ),
     );
   }
 }
@@ -127,6 +137,17 @@ class HomeScreen extends StatelessWidget {
           fontWeight: FontWeight.bold,
           letterSpacing: 0.5,
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfilePage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(
