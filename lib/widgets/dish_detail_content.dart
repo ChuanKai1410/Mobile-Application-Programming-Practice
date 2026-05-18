@@ -4,9 +4,11 @@ import '../main.dart';
 import '../models/spaghetti_dish.dart';
 import 'dish_widgets.dart';
 
+import '../models/ingredient.dart';
+
 class DishDetailContent extends StatefulWidget {
   final SpaghettiDish dish;
-  final List<String> ingredients;
+  final List<Ingredient> ingredients;
   final List<String> method;
 
   const DishDetailContent({
@@ -110,23 +112,51 @@ class _DishDetailContentState extends State<DishDetailContent> {
       child: Column(
         children: [
           Expanded(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(14),
-                topRight: Radius.circular(14),
-              ),
-              child: Image.asset(
-                widget.dish.imageAsset,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey[300],
-                    alignment: Alignment.center,
-                    child: const Icon(Icons.restaurant, size: 64, color: Colors.grey),
-                  );
-                },
-              ),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(14),
+                      topRight: Radius.circular(14),
+                    ),
+                    child: Image.asset(
+                      widget.dish.imageAsset,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey[300],
+                          alignment: Alignment.center,
+                          child: const Icon(Icons.restaurant, size: 64, color: Colors.grey),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 12,
+                  right: 12,
+                  child: Consumer<SpaghettiShopAppState>(
+                    builder: (context, appState, child) {
+                      final isFav = widget.dish.isFavorite;
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.8),
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            isFav ? Icons.favorite : Icons.favorite_border,
+                            color: isFav ? Colors.red : Colors.grey[600],
+                          ),
+                          onPressed: () => appState.toggleFavorite(widget.dish),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
@@ -298,63 +328,110 @@ class _DishDetailContentState extends State<DishDetailContent> {
   }
 
   Widget _buildIngredientsTab() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFD32F2F), width: 2),
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Ingredients',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFD32F2F),
-            ),
+    return Consumer<SpaghettiShopAppState>(
+      builder: (context, appState, child) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFD32F2F), width: 2),
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
           ),
-          const SizedBox(height: 16),
-          ...widget.ingredients.map((ingredient) {
-            final isCategory = ingredient.endsWith(':');
-            final cleanedIngredient = ingredient.replaceFirst(RegExp(r'^\s*•\s*'), '');
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (!isCategory)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12, top: 4),
-                      child: Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFD32F2F),
-                          shape: BoxShape.circle,
+                  const Text(
+                    'Ingredients',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFD32F2F),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.remove, size: 20),
+                          color: const Color(0xFFD32F2F),
+                          onPressed: () => appState.decrementServings(),
                         ),
-                      ),
-                    )
-                  else
-                    const SizedBox(width: 20),
-                  Expanded(
-                    child: Text(
-                      cleanedIngredient,
-                      style: TextStyle(
-                        fontSize: isCategory ? 16 : 15,
-                        fontWeight: isCategory ? FontWeight.bold : FontWeight.w500,
-                        color: isCategory ? const Color(0xFFD32F2F) : const Color(0xFF424242),
-                      ),
+                        Text(
+                          '${appState.servingSize} Servings',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.add, size: 20),
+                          color: const Color(0xFFD32F2F),
+                          onPressed: () => appState.incrementServings(),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            );
-          }),
-        ],
-      ),
+              const SizedBox(height: 16),
+              ...widget.ingredients.map((ingredient) {
+                final isCategory = ingredient.name.endsWith(':');
+                
+                String displayQuantity = '';
+                if (ingredient.baseQuantity > 0) {
+                  final scaledQuantity = ingredient.baseQuantity * appState.servingSize;
+                  
+                  String quantityStr = scaledQuantity.toString();
+                  if (scaledQuantity == scaledQuantity.truncateToDouble()) {
+                    quantityStr = scaledQuantity.truncate().toString();
+                  }
+                  
+                  displayQuantity = '$quantityStr ${ingredient.unit} ';
+                }
+                
+                final displayText = '$displayQuantity${ingredient.name}'.trim();
+                
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (!isCategory)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12, top: 4),
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFD32F2F),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        )
+                      else
+                        const SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          displayText,
+                          style: TextStyle(
+                            fontSize: isCategory ? 16 : 15,
+                            fontWeight: isCategory ? FontWeight.bold : FontWeight.w500,
+                            color: isCategory ? const Color(0xFFD32F2F) : const Color(0xFF424242),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ],
+          ),
+        );
+      },
     );
   }
 

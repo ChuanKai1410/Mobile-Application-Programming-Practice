@@ -1,5 +1,7 @@
+import 'ingredient.dart';
+
 class DishDetails {
-  final List<String> ingredients;
+  final List<Ingredient> ingredients;
   final List<String> method;
 
   const DishDetails({
@@ -10,13 +12,13 @@ class DishDetails {
 
 final aglioOlioDetails = DishDetails(
   ingredients: [
-    '300g spaghetti',
-    '4 cloves of garlic',
-    '2 red pepperoni',
-    '1 bunch of flat-leaf parsley',
-    '60 ml olive oil or neutral vegetable oil',
-    'Sea salt and pepper',
-    'Optional: grated Parmesan cheese',
+    const Ingredient(name: 'spaghetti', baseQuantity: 300, unit: 'g'),
+    const Ingredient(name: 'cloves of garlic', baseQuantity: 4, unit: ''),
+    const Ingredient(name: 'red pepperoni', baseQuantity: 2, unit: ''),
+    const Ingredient(name: 'bunch of flat-leaf parsley', baseQuantity: 1, unit: ''),
+    const Ingredient(name: 'olive oil or neutral vegetable oil', baseQuantity: 60, unit: 'ml'),
+    const Ingredient(name: 'Sea salt and pepper', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Optional: grated Parmesan cheese', baseQuantity: 0, unit: ''),
   ],
   method: [
     'Wash the parsley, shake dry, pluck off the leaves and chop.',
@@ -34,24 +36,24 @@ final aglioOlioDetails = DishDetails(
 
 final tomatoDetails = DishDetails(
   ingredients: [
-    'Water for boiling',
-    'Salt',
-    'Spaghetti',
-    '4-6 tomatoes',
-    '1 tbsp oil',
-    '1 tbsp finely chopped garlic',
-    '2 tsp red chili flakes',
-    '1 finely chopped onion',
-    'Finely chopped capsicum',
-    'Finely chopped carrot',
-    '1/2 tsp salt',
-    '1 tsp red chili powder',
-    '1/2 tsp black pepper powder',
-    '1 tsp mixed herbs seasoning',
-    'Basil leaves',
-    'Sugar',
-    'Tomato ketchup (optional)',
-    'Fresh cream/fresh cheese',
+    const Ingredient(name: 'Water for boiling', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Salt', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Spaghetti', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'tomatoes', baseQuantity: 5, unit: ''),
+    const Ingredient(name: 'oil', baseQuantity: 1, unit: 'tbsp'),
+    const Ingredient(name: 'finely chopped garlic', baseQuantity: 1, unit: 'tbsp'),
+    const Ingredient(name: 'red chili flakes', baseQuantity: 2, unit: 'tsp'),
+    const Ingredient(name: 'finely chopped onion', baseQuantity: 1, unit: ''),
+    const Ingredient(name: 'Finely chopped capsicum', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Finely chopped carrot', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'salt', baseQuantity: 0.5, unit: 'tsp'),
+    const Ingredient(name: 'red chili powder', baseQuantity: 1, unit: 'tsp'),
+    const Ingredient(name: 'black pepper powder', baseQuantity: 0.5, unit: 'tsp'),
+    const Ingredient(name: 'mixed herbs seasoning', baseQuantity: 1, unit: 'tsp'),
+    const Ingredient(name: 'Basil leaves', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Sugar', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Tomato ketchup (optional)', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Fresh cream/fresh cheese', baseQuantity: 0, unit: ''),
   ],
   method: [
     'Boil water with salt in a large pot.',
@@ -73,16 +75,16 @@ final tomatoDetails = DishDetails(
 
 final creamyGarlicDetails = DishDetails(
   ingredients: [
-    '2 teaspoons olive oil',
-    '4 garlic cloves, minced',
-    '2 tablespoons butter',
-    '3 cups chicken broth (or more as needed)',
-    '1/2 teaspoon ground black pepper',
-    '1/4 teaspoon salt',
-    '1/2 pound spaghetti',
-    '1 cup grated Parmesan cheese',
-    '3/4 cup heavy cream',
-    '1 1/2 tablespoons dried parsley',
+    const Ingredient(name: 'olive oil', baseQuantity: 2, unit: 'teaspoons'),
+    const Ingredient(name: 'garlic cloves, minced', baseQuantity: 4, unit: ''),
+    const Ingredient(name: 'butter', baseQuantity: 2, unit: 'tablespoons'),
+    const Ingredient(name: 'chicken broth (or more as needed)', baseQuantity: 3, unit: 'cups'),
+    const Ingredient(name: 'ground black pepper', baseQuantity: 0.5, unit: 'teaspoon'),
+    const Ingredient(name: 'salt', baseQuantity: 0.25, unit: 'teaspoon'),
+    const Ingredient(name: 'spaghetti', baseQuantity: 0.5, unit: 'pound'),
+    const Ingredient(name: 'grated Parmesan cheese', baseQuantity: 1, unit: 'cup'),
+    const Ingredient(name: 'heavy cream', baseQuantity: 0.75, unit: 'cup'),
+    const Ingredient(name: 'dried parsley', baseQuantity: 1.5, unit: 'tablespoons'),
   ],
   method: [
     'Gather all ingredients.',
@@ -101,24 +103,24 @@ final creamyGarlicDetails = DishDetails(
 
 final spicyDetails = DishDetails(
   ingredients: [
-    'For Pasta:',
-    '  • 1 tbsp salt',
-    '  • 2 cups penne pasta (or spaghetti)',
-    'For Sauce:',
-    '  • 4 tbsp olive oil',
-    '  • 2 tbsp butter',
-    '  • 4 cloves garlic (minced)',
-    '  • 1 tsp chili flakes',
-    '  • 1 small onion (finely chopped)',
-    '  • 1/2 cup tomato paste',
-    '  • 1 cup heavy cream',
-    '  • 1/4 tsp salt',
-    '  • 1 tsp mixed herb',
-    '  • 1/2 tsp black pepper',
-    '  • 1/2 cup Parmesan cheese',
-    'For Garnishing:',
-    '  • Chili flakes',
-    '  • Chopped coriander',
+    const Ingredient(name: 'For Pasta:', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'salt', baseQuantity: 1, unit: 'tbsp'),
+    const Ingredient(name: 'penne pasta (or spaghetti)', baseQuantity: 2, unit: 'cups'),
+    const Ingredient(name: 'For Sauce:', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'olive oil', baseQuantity: 4, unit: 'tbsp'),
+    const Ingredient(name: 'butter', baseQuantity: 2, unit: 'tbsp'),
+    const Ingredient(name: 'cloves garlic (minced)', baseQuantity: 4, unit: ''),
+    const Ingredient(name: 'chili flakes', baseQuantity: 1, unit: 'tsp'),
+    const Ingredient(name: 'small onion (finely chopped)', baseQuantity: 1, unit: ''),
+    const Ingredient(name: 'tomato paste', baseQuantity: 0.5, unit: 'cup'),
+    const Ingredient(name: 'heavy cream', baseQuantity: 1, unit: 'cup'),
+    const Ingredient(name: 'salt', baseQuantity: 0.25, unit: 'tsp'),
+    const Ingredient(name: 'mixed herb', baseQuantity: 1, unit: 'tsp'),
+    const Ingredient(name: 'black pepper', baseQuantity: 0.5, unit: 'tsp'),
+    const Ingredient(name: 'Parmesan cheese', baseQuantity: 0.5, unit: 'cup'),
+    const Ingredient(name: 'For Garnishing:', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Chili flakes', baseQuantity: 0, unit: ''),
+    const Ingredient(name: 'Chopped coriander', baseQuantity: 0, unit: ''),
   ],
   method: [
     'Place a large pot on the stove and fill with water.',
@@ -146,3 +148,4 @@ final spicyDetails = DishDetails(
     'Serve on a plate with grated parmesan cheese on top.',
   ],
 );
+

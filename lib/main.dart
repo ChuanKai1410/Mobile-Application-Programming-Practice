@@ -15,6 +15,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'firebase_options.dart';
 import 'auth_gate.dart';
 import 'widgets/cart_widget.dart';
+import 'screens/favorite_recipes_screen.dart';
 
 String get clientId => dotenv.env['GOOGLE_CLIENT_ID']!;
 
@@ -31,7 +32,7 @@ void main() async {
 }
 
 class SpaghettiShopAppState extends ChangeNotifier {
-  final List<SpaghettiDish> dishes = const [
+  final List<SpaghettiDish> dishes = [
     SpaghettiDish(
       name: 'Spaghetti Aglio e Olio',
       imageAsset: 'images/spaghetti_aglio_olio.png',
@@ -42,6 +43,7 @@ class SpaghettiShopAppState extends ChangeNotifier {
       cookTime: '15 min',
       feeds: '2-3',
       price: 'RM12.99',
+      isVegetarian: true,
     ),
     SpaghettiDish(
       name: 'Spicy Spaghetti Arrabbiata',
@@ -53,6 +55,7 @@ class SpaghettiShopAppState extends ChangeNotifier {
       cookTime: '18 min',
       feeds: '2',
       price: 'RM11.99',
+      isVegetarian: true,
     ),
     SpaghettiDish(
       name: 'Creamy Garlic Spaghetti',
@@ -64,6 +67,7 @@ class SpaghettiShopAppState extends ChangeNotifier {
       cookTime: '12 min',
       feeds: '2-3',
       price: 'RM13.99',
+      isVegetarian: false, // contains chicken broth
     ),
     SpaghettiDish(
       name: 'Spaghetti al Pomodoro',
@@ -75,6 +79,7 @@ class SpaghettiShopAppState extends ChangeNotifier {
       cookTime: '20 min',
       feeds: '2-3',
       price: 'RM10.99',
+      isVegetarian: true,
     ),
   ];
 
@@ -85,6 +90,46 @@ class SpaghettiShopAppState extends ChangeNotifier {
   void selectDish(SpaghettiDish dish) {
     _selectedDish = dish;
     notifyListeners();
+  }
+
+  // Feature 1: Favorites
+  void toggleFavorite(SpaghettiDish dish) {
+    dish.isFavorite = !dish.isFavorite;
+    notifyListeners();
+  }
+
+  List<SpaghettiDish> get favoriteRecipes {
+    return dishes.where((recipe) => recipe.isFavorite).toList();
+  }
+
+  // Feature 2: Serving Size
+  int servingSize = 1;
+
+  void incrementServings() {
+    servingSize++;
+    notifyListeners();
+  }
+
+  void decrementServings() {
+    if (servingSize > 1) {
+      servingSize--;
+      notifyListeners();
+    }
+  }
+
+  // Feature 3: Vegetarian Filter
+  bool showVegetarianOnly = false;
+
+  void toggleVegetarianFilter(bool value) {
+    showVegetarianOnly = value;
+    notifyListeners();
+  }
+
+  List<SpaghettiDish> get displayedRecipes {
+    if (showVegetarianOnly) {
+      return dishes.where((r) => r.isVegetarian).toList();
+    }
+    return dishes;
   }
 
   // Cart State
@@ -258,6 +303,15 @@ class HomeScreen extends StatelessWidget {
           letterSpacing: 0.5,
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FavoriteRecipesScreen()),
+              );
+            },
+          ),
           const CartBadgeWidget(),
           IconButton(
             icon: const Icon(Icons.person, color: Colors.white),
@@ -421,6 +475,35 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withValues(alpha: 0.2),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: SwitchListTile(
+                      title: const Text(
+                        'Show Only Vegetarian',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFD32F2F),
+                        ),
+                      ),
+                      value: appState.showVegetarianOnly,
+                      onChanged: (value) {
+                        appState.toggleVegetarianFilter(value);
+                      },
+                      activeThumbColor: Colors.white,
+                      activeTrackColor: Colors.green,
+                    ),
+                  ),
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -430,9 +513,9 @@ class HomeScreen extends StatelessWidget {
                       mainAxisSpacing: 16,
                       childAspectRatio: aspectRatio,
                     ),
-                    itemCount: appState.dishes.length,
+                    itemCount: appState.displayedRecipes.length,
                     itemBuilder: (context, index) {
-                      final dish = appState.dishes[index];
+                      final dish = appState.displayedRecipes[index];
                       return DishCard(
                         dish: dish,
                         onTap: () => openDetail(dish),

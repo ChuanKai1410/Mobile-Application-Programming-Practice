@@ -1,5 +1,5 @@
 class SpaghettiDish {
-  const SpaghettiDish({
+  SpaghettiDish({
     required this.name,
     required this.imageAsset,
     required this.description,
@@ -8,6 +8,8 @@ class SpaghettiDish {
     required this.cookTime,
     required this.feeds,
     required this.price,
+    this.isFavorite = false,
+    this.isVegetarian = false,
   });
 
   final String name;
@@ -18,4 +20,6 @@ class SpaghettiDish {
   final String cookTime;
   final String feeds;
   final String price;
+  bool isFavorite;
+  final bool isVegetarian;
 }
