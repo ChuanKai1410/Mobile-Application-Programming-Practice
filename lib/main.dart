@@ -16,6 +16,8 @@ import 'firebase_options.dart';
 import 'auth_gate.dart';
 import 'widgets/cart_widget.dart';
 import 'screens/favorite_recipes_screen.dart';
+import 'screens/networking_screen.dart';
+import 'screens/serialization_screen.dart';
 
 String get clientId => dotenv.env['GOOGLE_CLIENT_ID']!;
 
@@ -303,6 +305,26 @@ class HomeScreen extends StatelessWidget {
           letterSpacing: 0.5,
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.code, color: Colors.white),
+            tooltip: 'Serialization',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SerializationScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.cloud, color: Colors.white),
+            tooltip: 'Networking & HTTP',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const NetworkingScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.favorite, color: Colors.white),
             onPressed: () {
