@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/spaghetti_dish.dart';
 import '../services/recipe_service.dart';
+import '../theme/app_colors.dart';
 import '../widgets/recipe_image.dart';
 
 class RecipeFormScreen extends StatefulWidget {
@@ -304,9 +305,9 @@ class _ImageUrlPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.cream,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: AppColors.line),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -320,10 +321,10 @@ class _ImageUrlPanel extends StatelessWidget {
                   height: 92,
                   child: recipe == null
                       ? Container(
-                          color: Colors.grey[300],
+                          color: AppColors.butter,
                           child: const Icon(
                             Icons.restaurant,
-                            color: Colors.grey,
+                            color: AppColors.softInk,
                           ),
                         )
                       : RecipeImage(recipe: recipe!, width: 92, height: 92),

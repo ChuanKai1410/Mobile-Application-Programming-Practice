@@ -19,6 +19,7 @@ import 'screens/recipe_detail_screen.dart';
 import 'screens/recipe_form_screen.dart';
 import 'screens/serialization_screen.dart';
 import 'services/recipe_service.dart';
+import 'theme/app_colors.dart';
 import 'widgets/recipe_image.dart';
 
 String get clientId => dotenv.env['GOOGLE_CLIENT_ID']!;
@@ -268,19 +269,31 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFD32F2F),
-          primary: const Color(0xFFD32F2F),
+          seedColor: AppColors.strawberry,
+          primary: AppColors.strawberry,
+          secondary: AppColors.mint,
+          tertiary: AppColors.coral,
+          surface: AppColors.cream,
+          onSurface: AppColors.cocoa,
         ),
-        scaffoldBackgroundColor: const Color(0xFFFFF3E0),
+        scaffoldBackgroundColor: AppColors.cream,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFD32F2F),
+          backgroundColor: AppColors.strawberry,
           foregroundColor: Colors.white,
           centerTitle: true,
-          elevation: 8,
+          elevation: 2,
+        ),
+        cardTheme: CardThemeData(
+          color: AppColors.cream,
+          elevation: 3,
+          shadowColor: AppColors.berry.withValues(alpha: 0.16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFD32F2F),
+            backgroundColor: AppColors.strawberry,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
@@ -291,20 +304,20 @@ class MyApp extends StatelessWidget {
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            foregroundColor: Colors.black87,
-            backgroundColor: Colors.white,
-            side: const BorderSide(color: Colors.grey),
+            foregroundColor: AppColors.berry,
+            backgroundColor: AppColors.cream,
+            side: const BorderSide(color: AppColors.line),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
         ),
         textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(foregroundColor: const Color(0xFFD32F2F)),
+          style: TextButton.styleFrom(foregroundColor: AppColors.berry),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: Colors.grey.shade100,
+          fillColor: AppColors.cream,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 16,
@@ -315,7 +328,7 @@ class MyApp extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFFD32F2F), width: 2),
+            borderSide: const BorderSide(color: AppColors.strawberry, width: 2),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -339,7 +352,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Spaghetti Restaurant'),
-        backgroundColor: const Color(0xFFD32F2F),
+        backgroundColor: AppColors.strawberry,
         elevation: 8,
         centerTitle: true,
         titleTextStyle: const TextStyle(
@@ -408,13 +421,13 @@ class HomeScreen extends StatelessWidget {
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [Color(0xFFFFF3E0), Color(0xFFFFE0B2)],
+                          colors: [AppColors.cream, AppColors.peach],
                         ),
                       ),
                       child: ProfileScreen(
                         appBar: AppBar(
                           title: const Text('User Profile'),
-                          backgroundColor: const Color(0xFFD32F2F),
+                          backgroundColor: AppColors.strawberry,
                           foregroundColor: Colors.white,
                           elevation: 0,
                         ),
@@ -479,7 +492,7 @@ class HomeScreen extends StatelessWidget {
                                     child: const Center(
                                       child: Icon(
                                         Icons.email,
-                                        color: Color(0xFFD32F2F),
+                                        color: AppColors.strawberry,
                                         size: 24,
                                       ),
                                     ),
@@ -497,7 +510,7 @@ class HomeScreen extends StatelessWidget {
                               child: Icon(
                                 Icons.restaurant,
                                 size: 80,
-                                color: Color(0xFFD32F2F),
+                                color: AppColors.strawberry,
                               ),
                             ),
                           ),
@@ -512,7 +525,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: const Color(0xFFD32F2F),
+        backgroundColor: AppColors.berry,
         foregroundColor: Colors.white,
         onPressed: () {
           Navigator.push(
@@ -528,7 +541,7 @@ class HomeScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF3E0), Color(0xFFFFE0B2)],
+            colors: [AppColors.cream, AppColors.peach],
           ),
         ),
         child: StreamBuilder<List<SpaghettiDish>>(
@@ -675,37 +688,143 @@ class _MenuHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isCompact = width < 640;
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: EdgeInsets.all(isCompact ? 16 : 20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        gradient: AppColors.highlightGradient,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.line.withValues(alpha: 0.55)),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: AppColors.berry.withValues(alpha: 0.12),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Column(
+      child: isCompact
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _headerContent(isCompact),
+            )
+          : Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _headerContent(isCompact),
+                  ),
+                ),
+                const SizedBox(width: 18),
+                Container(
+                  width: 118,
+                  height: 118,
+                  decoration: BoxDecoration(
+                    color: AppColors.butter,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: AppColors.line),
+                  ),
+                  child: const Icon(
+                    Icons.local_dining,
+                    size: 58,
+                    color: AppColors.strawberry,
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+
+  List<Widget> _headerContent(bool isCompact) {
+    return [
+      Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Our Delicious Menu',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: width < 600 ? 22 : 28,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFFD32F2F),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: AppColors.mint.withValues(alpha: 0.22),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: const Text(
+              'Fresh picks',
+              style: TextStyle(
+                color: AppColors.leaf,
+                fontWeight: FontWeight.w800,
+                fontSize: 12,
+              ),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(width: 8),
+          const Icon(Icons.auto_awesome, color: AppColors.coral, size: 18),
+        ],
+      ),
+      const SizedBox(height: 10),
+      Text(
+        'Pick a pasta mood',
+        style: TextStyle(
+          fontSize: isCompact ? 26 : 34,
+          fontWeight: FontWeight.w900,
+          color: AppColors.berry,
+          height: 1.05,
+        ),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        'Search, filter, and manage your cloud recipe collection.',
+        style: TextStyle(
+          color: AppColors.softInk,
+          fontSize: isCompact ? 14 : 15,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      const SizedBox(height: 14),
+      Wrap(
+        spacing: 10,
+        runSpacing: 8,
+        children: [
+          _HeaderMetric(value: '$recipeCount', label: 'shown'),
+          _HeaderMetric(value: '$totalCount', label: 'total'),
+        ],
+      ),
+    ];
+  }
+}
+
+class _HeaderMetric extends StatelessWidget {
+  const _HeaderMetric({required this.value, required this.label});
+
+  final String value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.cream,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.line.withValues(alpha: 0.6)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Text(
-            '$recipeCount of $totalCount recipes shown',
+            value,
             style: const TextStyle(
-              color: Colors.black54,
-              fontWeight: FontWeight.w600,
+              color: AppColors.strawberry,
+              fontWeight: FontWeight.w900,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.softInk,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
@@ -724,61 +843,101 @@ class _RecipeControls extends StatelessWidget {
     final appState = context.watch<SpaghettiShopAppState>();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 18),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.cream.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.line.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
+            color: AppColors.berry.withValues(alpha: 0.08),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
-      child: Column(
-        children: [
-          TextField(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 760;
+          final search = TextField(
             decoration: const InputDecoration(
-              hintText: 'Search recipes',
-              prefixIcon: Icon(Icons.search),
+              hintText: 'Search by name, category, or description',
+              prefixIcon: Icon(Icons.search, color: AppColors.strawberry),
             ),
             onChanged: appState.updateSearchQuery,
-          ),
-          const SizedBox(height: 12),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: categories.map((category) {
-                return ChoiceChip(
-                  label: Text(category),
-                  selected: appState.selectedCategory == category,
-                  onSelected: (_) => appState.updateCategory(category),
-                );
-              }).toList(),
-            ),
-          ),
-          Material(
-            color: Colors.transparent,
-            child: SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text(
-                'Show Only Vegetarian',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFD32F2F),
+          );
+
+          final categoryChips = Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: categories.map((category) {
+              return ChoiceChip(
+                label: Text(category),
+                selected: appState.selectedCategory == category,
+                selectedColor: AppColors.peach,
+                backgroundColor: AppColors.cream,
+                side: const BorderSide(color: AppColors.line),
+                labelStyle: TextStyle(
+                  color: appState.selectedCategory == category
+                      ? AppColors.berry
+                      : AppColors.softInk,
+                  fontWeight: FontWeight.w700,
                 ),
-              ),
-              value: appState.showVegetarianOnly,
-              onChanged: appState.toggleVegetarianFilter,
-              activeThumbColor: Colors.white,
-              activeTrackColor: Colors.green,
+                onSelected: (_) => appState.updateCategory(category),
+              );
+            }).toList(),
+          );
+
+          final vegetarianToggle = FilterChip(
+            avatar: Icon(
+              appState.showVegetarianOnly ? Icons.eco : Icons.eco_outlined,
+              color: appState.showVegetarianOnly
+                  ? AppColors.leaf
+                  : AppColors.softInk,
+              size: 18,
             ),
-          ),
-        ],
+            label: const Text('Vegetarian'),
+            selected: appState.showVegetarianOnly,
+            selectedColor: AppColors.mint.withValues(alpha: 0.35),
+            backgroundColor: AppColors.cream,
+            side: const BorderSide(color: AppColors.line),
+            labelStyle: const TextStyle(fontWeight: FontWeight.w800),
+            onSelected: appState.toggleVegetarianFilter,
+          );
+
+          if (isWide) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(flex: 4, child: search),
+                const SizedBox(width: 14),
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      categoryChips,
+                      const SizedBox(height: 8),
+                      vegetarianToggle,
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              search,
+              const SizedBox(height: 12),
+              categoryChips,
+              const SizedBox(height: 8),
+              vegetarianToggle,
+            ],
+          );
+        },
       ),
     );
   }
@@ -795,7 +954,7 @@ class _EmptyFirestoreState extends StatelessWidget {
       padding: const EdgeInsets.all(32),
       child: Column(
         children: [
-          const Icon(Icons.cloud_off, size: 72, color: Color(0xFFD32F2F)),
+          const Icon(Icons.cloud_off, size: 72, color: AppColors.strawberry),
           const SizedBox(height: 12),
           const Text(
             'No recipes in Firestore yet.',
@@ -824,109 +983,119 @@ class DishCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        elevation: 6,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFFFFF9C4), Color(0xFFFFE082)],
+        elevation: 4,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  gradient: AppColors.cardGradient,
+                ),
+              ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 4,
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12),
-                    ),
-                    child: RecipeImage(recipe: dish),
+            Positioned.fill(bottom: 92, child: RecipeImage(recipe: dish)),
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.cream.withValues(alpha: 0.92),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  dish.category,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: AppColors.berry,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 12,
                   ),
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.leaf.withValues(alpha: 0.92),
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                child: Text(
+                  dish.price,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(14, 16, 14, 14),
+                decoration: BoxDecoration(
+                  color: AppColors.cream,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(18),
+                    topRight: Radius.circular(18),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.berry.withValues(alpha: 0.12),
+                      blurRadius: 14,
+                      offset: const Offset(0, -4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
                         dish.name,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Color(0xFFD32F2F),
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                          color: AppColors.berry,
+                          height: 1.12,
                         ),
                       ),
-                      Text(
-                        dish.category,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                        ),
+                    ),
+                    const SizedBox(width: 10),
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: AppColors.strawberry,
+                        borderRadius: BorderRadius.circular(14),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            dish.price,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.green,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFD32F2F),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: const Text(
-                              'View',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: const Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                        size: 20,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

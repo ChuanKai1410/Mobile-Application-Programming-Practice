@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../services/recipe_service.dart';
+import '../theme/app_colors.dart';
 import '../widgets/recipe_image.dart';
 import '../models/spaghetti_dish.dart';
 import 'recipe_detail_screen.dart';
@@ -69,7 +70,7 @@ class FavoriteRecipesScreen extends StatelessWidget {
                   ),
                   subtitle: Text(dish.category),
                   trailing: IconButton(
-                    icon: const Icon(Icons.favorite, color: Colors.red),
+                    icon: const Icon(Icons.favorite, color: AppColors.berry),
                     onPressed: () => appState.toggleFavorite(dish),
                   ),
                   onTap: () => openDetail(dish),

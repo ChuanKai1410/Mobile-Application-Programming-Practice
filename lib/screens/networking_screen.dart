@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/network_recipe.dart';
 import '../services/api_service.dart';
 import '../services/websocket_service.dart';
+import '../theme/app_colors.dart';
 
 class NetworkingScreen extends StatefulWidget {
   const NetworkingScreen({super.key});
@@ -260,7 +261,7 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFFD32F2F),
+                          color: AppColors.berry,
                         ),
                       ),
                     ],

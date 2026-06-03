@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'theme/app_colors.dart';
+
 class ResponsiveAuthWrapper extends StatelessWidget {
   final Widget child;
   final String title;
@@ -14,13 +16,7 @@ class ResponsiveAuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFFD32F2F), Color(0xFFFF9800)],
-          ),
-        ),
+        decoration: const BoxDecoration(gradient: AppColors.authGradient),
         child: Center(
           child: SingleChildScrollView(
             child: LayoutBuilder(
@@ -35,7 +31,7 @@ class ResponsiveAuthWrapper extends StatelessWidget {
                     const Icon(
                       Icons.restaurant,
                       size: 80,
-                      color: Color(0xFFD32F2F),
+                      color: AppColors.strawberry,
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -44,7 +40,7 @@ class ResponsiveAuthWrapper extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFFD32F2F),
+                        color: AppColors.berry,
                       ),
                     ),
                   ],

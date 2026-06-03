@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../screens/cart_screen.dart';
+import '../theme/app_colors.dart';
 
 class CartBadgeWidget extends StatelessWidget {
   const CartBadgeWidget({super.key});
@@ -29,7 +30,7 @@ class CartBadgeWidget extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: const BoxDecoration(
-                    color: Colors.amber,
+                    color: AppColors.butter,
                     shape: BoxShape.circle,
                   ),
                   constraints: const BoxConstraints(
@@ -39,7 +40,7 @@ class CartBadgeWidget extends StatelessWidget {
                   child: Text(
                     '${appState.totalCartItems}',
                     style: const TextStyle(
-                      color: Colors.black,
+                      color: AppColors.berry,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),

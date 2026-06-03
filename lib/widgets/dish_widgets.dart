@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/spaghetti_dish.dart';
+import '../theme/app_colors.dart';
 
 class DishDetailsColumn extends StatelessWidget {
   const DishDetailsColumn({super.key, required this.dish});
@@ -12,8 +13,8 @@ class DishDetailsColumn extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFD32F2F), width: 2),
-        color: const Color(0xFFFFF9C4),
+        border: Border.all(color: AppColors.line, width: 2),
+        color: AppColors.butter,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -24,7 +25,7 @@ class DishDetailsColumn extends StatelessWidget {
               dish.name,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Color(0xFFD32F2F),
+                color: AppColors.berry,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Roboto',
                 fontSize: 20,
@@ -36,7 +37,7 @@ class DishDetailsColumn extends StatelessWidget {
               'Price: ${dish.price}',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.green,
+                color: AppColors.leaf,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Roboto',
                 fontSize: 18,
@@ -76,9 +77,9 @@ Widget ratings(SpaghettiDish dish) {
     margin: const EdgeInsets.only(bottom: 8),
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
     decoration: BoxDecoration(
-      border: Border.all(color: const Color(0xFFD32F2F), width: 2),
+      border: Border.all(color: AppColors.line, width: 2),
       borderRadius: BorderRadius.circular(6),
-      color: Colors.white,
+      color: AppColors.cream,
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -87,7 +88,7 @@ Widget ratings(SpaghettiDish dish) {
         Text(
           dish.reviews,
           style: const TextStyle(
-            color: Color(0xFFD32F2F),
+            color: AppColors.berry,
             fontWeight: FontWeight.w700,
             fontFamily: 'Roboto',
             letterSpacing: 0.3,
@@ -102,7 +103,7 @@ Widget ratings(SpaghettiDish dish) {
 Widget iconList(SpaghettiDish dish) {
   return DefaultTextStyle.merge(
     style: const TextStyle(
-      color: Color(0xFFD32F2F),
+      color: AppColors.berry,
       fontWeight: FontWeight.w700,
       fontFamily: 'Roboto',
       fontSize: 16,
@@ -110,9 +111,9 @@ Widget iconList(SpaghettiDish dish) {
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFD32F2F), width: 2),
+        border: Border.all(color: AppColors.line, width: 2),
         borderRadius: BorderRadius.circular(6),
-        color: Colors.white,
+        color: AppColors.cream,
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -122,7 +123,7 @@ Widget iconList(SpaghettiDish dish) {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.kitchen, color: Colors.orange[700], size: 28),
+                const Icon(Icons.kitchen, color: AppColors.coral, size: 28),
                 const Text('PREP:'),
                 const SizedBox(height: 4),
                 Text(dish.prepTime),
@@ -131,7 +132,7 @@ Widget iconList(SpaghettiDish dish) {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.timer, color: Colors.orange[700], size: 28),
+                const Icon(Icons.timer, color: AppColors.coral, size: 28),
                 const Text('COOK:'),
                 const SizedBox(height: 4),
                 Text(dish.cookTime),
@@ -140,7 +141,7 @@ Widget iconList(SpaghettiDish dish) {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.restaurant, color: Colors.orange[700], size: 28),
+                const Icon(Icons.restaurant, color: AppColors.coral, size: 28),
                 const Text('SERVES:'),
                 const SizedBox(height: 4),
                 Text(dish.feeds),
@@ -171,7 +172,7 @@ Widget iconList(SpaghettiDish dish) {
 }
 
 const descTextStyle = TextStyle(
-  color: Color(0xFF424242),
+  color: AppColors.cocoa,
   fontWeight: FontWeight.w600,
   fontFamily: 'Roboto',
   letterSpacing: 0.2,
@@ -184,9 +185,9 @@ Widget boxedSection(Widget child) {
     margin: const EdgeInsets.only(bottom: 8),
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     decoration: BoxDecoration(
-      border: Border.all(color: const Color(0xFFD32F2F), width: 1),
+      border: Border.all(color: AppColors.line, width: 1),
       borderRadius: BorderRadius.circular(4),
-      color: Colors.white,
+      color: AppColors.cream,
     ),
     child: child,
   );

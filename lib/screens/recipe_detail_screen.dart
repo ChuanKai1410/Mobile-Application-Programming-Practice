@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 import '../models/spaghetti_dish.dart';
 import '../services/recipe_service.dart';
+import '../theme/app_colors.dart';
 import '../widgets/cart_widget.dart';
 import '../widgets/dish_widgets.dart';
 import '../widgets/recipe_image.dart';
@@ -102,7 +103,7 @@ class RecipeDetailScreen extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFFFF3E0), Color(0xFFFFE0B2)],
+                colors: [AppColors.cream, AppColors.peach],
               ),
             ),
             child: LayoutBuilder(
@@ -115,16 +116,16 @@ class RecipeDetailScreen extends StatelessWidget {
                   return Row(
                     children: [
                       Expanded(
-                        flex: 4,
+                        flex: 5,
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.fromLTRB(24, 22, 12, 22),
                           child: imagePanel,
                         ),
                       ),
                       Expanded(
-                        flex: 6,
+                        flex: 7,
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.fromLTRB(12, 22, 24, 22),
                           child: detailPanel,
                         ),
                       ),
@@ -157,12 +158,31 @@ class _ImagePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 5,
+      shadowColor: AppColors.berry.withValues(alpha: 0.18),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
       clipBehavior: Clip.antiAlias,
       child: Stack(
         children: [
           Positioned.fill(child: RecipeImage(recipe: recipe)),
+          Positioned(
+            left: 16,
+            bottom: 16,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.cream.withValues(alpha: 0.9),
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Text(
+                recipe.category,
+                style: const TextStyle(
+                  color: AppColors.berry,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+          ),
           Positioned(
             top: 12,
             right: 12,
@@ -171,12 +191,12 @@ class _ImagePanel extends StatelessWidget {
                 final isFav = appState.isFavorite(recipe);
                 return DecoratedBox(
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.85),
+                    color: AppColors.cream.withValues(alpha: 0.9),
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
                     icon: Icon(isFav ? Icons.favorite : Icons.favorite_border),
-                    color: isFav ? Colors.red : Colors.grey[700],
+                    color: isFav ? AppColors.berry : AppColors.softInk,
                     onPressed: () => appState.toggleFavorite(recipe),
                   ),
                 );
@@ -210,8 +230,9 @@ class _DetailPanelState extends State<_DetailPanel> {
 
         return Card(
           elevation: 4,
+          shadowColor: AppColors.berry.withValues(alpha: 0.14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
             mainAxisSize: hasBoundedHeight
@@ -238,7 +259,7 @@ class _DetailPanelState extends State<_DetailPanel> {
   Widget _buildTabs() {
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppColors.cream,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12),
           topRight: Radius.circular(12),
@@ -263,13 +284,11 @@ class _DetailPanelState extends State<_DetailPanel> {
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
             color: isSelected
-                ? Colors.orange.withValues(alpha: 0.1)
+                ? AppColors.peach.withValues(alpha: 0.45)
                 : Colors.transparent,
             border: Border(
               bottom: BorderSide(
-                color: isSelected
-                    ? const Color(0xFFD32F2F)
-                    : Colors.transparent,
+                color: isSelected ? AppColors.strawberry : Colors.transparent,
                 width: 3,
               ),
             ),
@@ -278,7 +297,7 @@ class _DetailPanelState extends State<_DetailPanel> {
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: isSelected ? const Color(0xFFD32F2F) : Colors.grey[600],
+              color: isSelected ? AppColors.berry : AppColors.softInk,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -298,9 +317,9 @@ class _DetailPanelState extends State<_DetailPanel> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFD32F2F), width: 2),
+        border: Border.all(color: AppColors.line, width: 2),
         borderRadius: BorderRadius.circular(8),
-        color: const Color(0xFFFFF9C4),
+        color: AppColors.butter,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -309,7 +328,7 @@ class _DetailPanelState extends State<_DetailPanel> {
             recipe.name,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              color: Color(0xFFD32F2F),
+              color: AppColors.berry,
               fontWeight: FontWeight.w800,
               fontSize: 24,
             ),
@@ -318,7 +337,7 @@ class _DetailPanelState extends State<_DetailPanel> {
           Center(
             child: Chip(
               label: Text(recipe.category),
-              backgroundColor: const Color(0xFFFFF3E0),
+              backgroundColor: AppColors.cream,
             ),
           ),
           const SizedBox(height: 12),
@@ -389,9 +408,9 @@ class _TextListSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFD32F2F), width: 2),
+        border: Border.all(color: AppColors.line, width: 2),
         borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
+        color: AppColors.cream,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -399,7 +418,7 @@ class _TextListSection extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              color: Color(0xFFD32F2F),
+              color: AppColors.berry,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -419,7 +438,7 @@ class _TextListSection extends StatelessWidget {
                             height: 28,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFD32F2F),
+                              color: AppColors.strawberry,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
@@ -435,7 +454,7 @@ class _TextListSection extends StatelessWidget {
                             child: Icon(
                               Icons.circle,
                               size: 8,
-                              color: Color(0xFFD32F2F),
+                              color: AppColors.strawberry,
                             ),
                           ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import '../theme/app_colors.dart';
 import '../widgets/recipe_image.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -106,7 +107,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               Text(
                                 item.dish.price,
                                 style: const TextStyle(
-                                  color: Colors.green,
+                                  color: AppColors.leaf,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -131,12 +132,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.cream,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, -5),
+                  color: AppColors.berry.withValues(alpha: 0.12),
+                  blurRadius: 18,
+                  offset: const Offset(0, -6),
                 ),
               ],
             ),
@@ -160,7 +165,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFFD32F2F),
+                          color: AppColors.berry,
                         ),
                       ),
                     ],
