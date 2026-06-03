@@ -1,66 +1,75 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../models/network_recipe.dart';
+import '../models/spaghetti_dish.dart';
 
 class ApiService {
-  static const String baseUrl = 'https://jsonplaceholder.typicode.com';
-
-  // GET
-  Future<NetworkRecipe> fetchRecipe() async {
-    final response = await http.get(Uri.parse('$baseUrl/albums/1'));
-
-    if (response.statusCode == 200) {
-      return NetworkRecipe.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load recipe: ${response.statusCode}');
-    }
+  Future<NetworkResponse> fetchRecipeCatalog(
+    List<SpaghettiDish> recipes,
+  ) async {
+    await _networkDelay();
+    return NetworkResponse(
+      method: 'GET',
+      path: '/api/recipes',
+      statusCode: 200,
+      message: 'Fetched ${recipes.length} recipes from the app catalog.',
+      recipes: recipes.map(NetworkRecipe.fromDish).toList(),
+    );
   }
 
-  // POST
-  Future<NetworkRecipe> createRecipe(NetworkRecipe recipe) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/albums'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(recipe.toJson()),
+  Future<NetworkResponse> createRecipePreview() async {
+    await _networkDelay();
+    final recipe = NetworkRecipe(
+      recipeId: 'preview_${DateTime.now().millisecondsSinceEpoch}',
+      recipeTitle: 'Sunny Lemon Pasta',
+      category: 'Preview',
+      price: 'RM15.90',
+      ingredientCount: 6,
+      vegetarian: true,
     );
-
-    if (response.statusCode == 201) {
-      return NetworkRecipe.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to create recipe: ${response.statusCode}');
-    }
+    return NetworkResponse(
+      method: 'POST',
+      path: '/api/recipes',
+      statusCode: 201,
+      message: 'Preview recipe payload accepted.',
+      body: recipe.toJson(),
+      recipes: [recipe],
+    );
   }
 
-  // PUT/PATCH
-  Future<NetworkRecipe> updateRecipe(int id, String newTitle) async {
-    final response = await http.patch(
-      Uri.parse('$baseUrl/albums/$id'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{'title': newTitle}),
+  Future<NetworkResponse> updateRecipePreview(
+    NetworkRecipe recipe,
+    String newTitle,
+  ) async {
+    await _networkDelay();
+    final updated = NetworkRecipe(
+      recipeId: recipe.recipeId,
+      recipeTitle: newTitle,
+      category: recipe.category,
+      price: recipe.price,
+      ingredientCount: recipe.ingredientCount,
+      vegetarian: recipe.vegetarian,
     );
-
-    if (response.statusCode == 200) {
-      return NetworkRecipe.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to update recipe: ${response.statusCode}');
-    }
+    return NetworkResponse(
+      method: 'PATCH',
+      path: '/api/recipes/${recipe.recipeId}',
+      statusCode: 200,
+      message: 'Preview update response generated.',
+      body: {'title': newTitle},
+      recipes: [updated],
+    );
   }
 
-  // DELETE
-  Future<void> deleteRecipe(int id) async {
-    final response = await http.delete(
-      Uri.parse('$baseUrl/albums/$id'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+  Future<NetworkResponse> deleteRecipePreview(NetworkRecipe recipe) async {
+    await _networkDelay();
+    return NetworkResponse(
+      method: 'DELETE',
+      path: '/api/recipes/${recipe.recipeId}',
+      statusCode: 204,
+      message: 'Preview delete request completed.',
+      body: {'deletedId': recipe.recipeId},
     );
+  }
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to delete recipe: ${response.statusCode}');
-    }
+  Future<void> _networkDelay() {
+    return Future.delayed(const Duration(milliseconds: 450));
   }
 }
