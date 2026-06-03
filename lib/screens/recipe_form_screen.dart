@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../models/spaghetti_dish.dart';
 import '../services/recipe_service.dart';
@@ -17,9 +16,9 @@ class RecipeFormScreen extends StatefulWidget {
 class _RecipeFormScreenState extends State<RecipeFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _service = RecipeService();
-  final _picker = ImagePicker();
 
   late final TextEditingController _nameController;
+  late final TextEditingController _imageUrlController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _categoryController;
   late final TextEditingController _priceController;
@@ -31,8 +30,6 @@ class _RecipeFormScreenState extends State<RecipeFormScreen> {
 
   bool _isVegetarian = false;
   bool _isSaving = false;
-  XFile? _selectedImage;
-  String _imageUrl = '';
 
   bool get _isEditing => widget.recipe != null;
 
@@ -41,6 +38,7 @@ class _RecipeFormScreenState extends State<RecipeFormScreen> {
     super.initState();
     final recipe = widget.recipe;
     _nameController = TextEditingController(text: recipe?.name ?? '');
+    _imageUrlController = TextEditingController(text: recipe?.imageUrl ?? '');
     _descriptionController = TextEditingController(
       text: recipe?.description ?? '',
     );
@@ -60,12 +58,12 @@ class _RecipeFormScreenState extends State<RecipeFormScreen> {
       text: recipe?.method.join('\n') ?? '',
     );
     _isVegetarian = recipe?.isVegetarian ?? false;
-    _imageUrl = recipe?.imageUrl ?? '';
   }
 
   @override
   void dispose() {
     _nameController.dispose();
+    _imageUrlController.dispose();
     _descriptionController.dispose();
     _categoryController.dispose();
     _priceController.dispose();
@@ -77,33 +75,17 @@ class _RecipeFormScreenState extends State<RecipeFormScreen> {
     super.dispose();
   }
 
-  Future<void> _pickImage() async {
-    final image = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 82,
-      maxWidth: 1600,
-    );
-    if (image != null) {
-      setState(() => _selectedImage = image);
-    }
-  }
-
   Future<void> _saveRecipe() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isSaving = true);
     try {
-      var imageUrl = _imageUrl;
-      if (_selectedImage != null) {
-        imageUrl = await _service.uploadRecipeImage(_selectedImage!);
-      }
-
       final priceNumber = double.parse(_priceController.text.trim());
       final recipe = SpaghettiDish(
         id: widget.recipe?.id ?? '',
         name: _nameController.text.trim(),
         imageAsset: widget.recipe?.imageAsset ?? '',
-        imageUrl: imageUrl,
+        imageUrl: _imageUrlController.text.trim(),
         description: _descriptionController.text.trim(),
         category: _categoryController.text.trim(),
         reviews: widget.recipe?.reviews ?? '0 Reviews',
@@ -170,6 +152,19 @@ class _RecipeFormScreenState extends State<RecipeFormScreen> {
     return null;
   }
 
+  String? _imageUrlValidator(String? value) {
+    final trimmed = value?.trim() ?? '';
+    if (trimmed.isEmpty) return null;
+    final uri = Uri.tryParse(trimmed);
+    if (uri == null || !uri.hasScheme || !uri.hasAuthority) {
+      return 'Enter a valid image URL';
+    }
+    if (uri.scheme != 'http' && uri.scheme != 'https') {
+      return 'Image URL must start with http or https';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,10 +174,10 @@ class _RecipeFormScreenState extends State<RecipeFormScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _ImagePickerPanel(
+            _ImageUrlPanel(
               recipe: widget.recipe,
-              selectedImageName: _selectedImage?.name,
-              onPickImage: _pickImage,
+              controller: _imageUrlController,
+              validator: _imageUrlValidator,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -293,16 +288,16 @@ class _RecipeFormScreenState extends State<RecipeFormScreen> {
   }
 }
 
-class _ImagePickerPanel extends StatelessWidget {
-  const _ImagePickerPanel({
+class _ImageUrlPanel extends StatelessWidget {
+  const _ImageUrlPanel({
     required this.recipe,
-    required this.selectedImageName,
-    required this.onPickImage,
+    required this.controller,
+    required this.validator,
   });
 
   final SpaghettiDish? recipe;
-  final String? selectedImageName;
-  final VoidCallback onPickImage;
+  final TextEditingController controller;
+  final String? Function(String?) validator;
 
   @override
   Widget build(BuildContext context) {
@@ -313,34 +308,46 @@ class _ImagePickerPanel extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: SizedBox(
-              width: 92,
-              height: 92,
-              child: recipe == null
-                  ? Container(
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.restaurant, color: Colors.grey),
-                    )
-                  : RecipeImage(recipe: recipe!, width: 92, height: 92),
-            ),
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: SizedBox(
+                  width: 92,
+                  height: 92,
+                  child: recipe == null
+                      ? Container(
+                          color: Colors.grey[300],
+                          child: const Icon(
+                            Icons.restaurant,
+                            color: Colors.grey,
+                          ),
+                        )
+                      : RecipeImage(recipe: recipe!, width: 92, height: 92),
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  'Paste an online image URL for this recipe.',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              selectedImageName ?? 'Upload a recipe image',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.w600),
+          const SizedBox(height: 12),
+          TextFormField(
+            controller: controller,
+            decoration: const InputDecoration(
+              labelText: 'Image URL',
+              hintText: 'https://example.com/recipe.jpg',
+              prefixIcon: Icon(Icons.link),
             ),
-          ),
-          IconButton(
-            tooltip: 'Choose image',
-            onPressed: onPickImage,
-            icon: const Icon(Icons.image),
+            keyboardType: TextInputType.url,
+            validator: validator,
           ),
         ],
       ),

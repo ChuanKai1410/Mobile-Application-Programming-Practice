@@ -1,22 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../models/spaghetti_dish.dart';
 
 class RecipeService {
-  RecipeService({
-    FirebaseFirestore? firestore,
-    FirebaseAuth? auth,
-    FirebaseStorage? storage,
-  }) : _firestore = firestore ?? FirebaseFirestore.instance,
-       _auth = auth ?? FirebaseAuth.instance,
-       _storage = storage ?? FirebaseStorage.instance;
+  RecipeService({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
-  final FirebaseStorage _storage;
 
   CollectionReference<Map<String, dynamic>> get _recipes =>
       _firestore.collection('recipes');
@@ -28,6 +21,13 @@ class RecipeService {
         .map(
           (snapshot) => snapshot.docs.map(SpaghettiDish.fromFirestore).toList(),
         );
+  }
+
+  Stream<SpaghettiDish?> watchRecipe(String recipeId) {
+    return _recipes.doc(recipeId).snapshots().map((snapshot) {
+      if (!snapshot.exists) return null;
+      return SpaghettiDish.fromFirestore(snapshot);
+    });
   }
 
   Future<void> addRecipe(SpaghettiDish recipe) async {
@@ -56,27 +56,6 @@ class RecipeService {
     }
     _requireUser();
     await _recipes.doc(recipe.id).delete();
-    if (recipe.imageUrl.isNotEmpty) {
-      try {
-        await _storage.refFromURL(recipe.imageUrl).delete();
-      } on FirebaseException {
-        // The recipe document is the source of truth; ignore stale/missing image refs.
-      }
-    }
-  }
-
-  Future<String> uploadRecipeImage(XFile image) async {
-    final user = _requireUser();
-    final extension = image.name.split('.').last.toLowerCase();
-    final safeExtension = extension.length <= 5 ? extension : 'jpg';
-    final ref = _storage.ref(
-      'recipe_images/${user.uid}/${DateTime.now().millisecondsSinceEpoch}.$safeExtension',
-    );
-    await ref.putData(
-      await image.readAsBytes(),
-      SettableMetadata(contentType: image.mimeType ?? 'image/$safeExtension'),
-    );
-    return ref.getDownloadURL();
   }
 
   Future<void> seedDefaultRecipes(List<SpaghettiDish> recipes) async {

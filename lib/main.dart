@@ -99,17 +99,9 @@ class SpaghettiShopAppState extends ChangeNotifier {
     ),
   ];
 
-  SpaghettiDish? _selectedDish;
   String _searchQuery = '';
   String _selectedCategory = 'All';
   final Set<String> _favoriteRecipeIds = {};
-
-  SpaghettiDish? get selectedDish => _selectedDish;
-
-  void selectDish(SpaghettiDish dish) {
-    _selectedDish = dish;
-    notifyListeners();
-  }
 
   // Feature 1: Favorites
   void toggleFavorite(SpaghettiDish dish) {
@@ -769,19 +761,22 @@ class _RecipeControls extends StatelessWidget {
               }).toList(),
             ),
           ),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text(
-              'Show Only Vegetarian',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFD32F2F),
+          Material(
+            color: Colors.transparent,
+            child: SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text(
+                'Show Only Vegetarian',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFD32F2F),
+                ),
               ),
+              value: appState.showVegetarianOnly,
+              onChanged: appState.toggleVegetarianFilter,
+              activeThumbColor: Colors.white,
+              activeTrackColor: Colors.green,
             ),
-            value: appState.showVegetarianOnly,
-            onChanged: appState.toggleVegetarianFilter,
-            activeThumbColor: Colors.white,
-            activeTrackColor: Colors.green,
           ),
         ],
       ),
