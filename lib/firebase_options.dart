@@ -64,7 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '75890959312',
     projectId: 'pasta-shop-5ca1c',
     storageBucket: 'pasta-shop-5ca1c.firebasestorage.app',
-    iosClientId: '75890959312-t7afplcua5hkkrldghsdd7nt7ej0bi1q.apps.googleusercontent.com',
+    iosClientId:
+        '75890959312-t7afplcua5hkkrldghsdd7nt7ej0bi1q.apps.googleusercontent.com',
     iosBundleId: 'com.example.layout2',
   );
 
@@ -74,7 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '75890959312',
     projectId: 'pasta-shop-5ca1c',
     storageBucket: 'pasta-shop-5ca1c.firebasestorage.app',
-    iosClientId: '75890959312-t7afplcua5hkkrldghsdd7nt7ej0bi1q.apps.googleusercontent.com',
+    iosClientId:
+        '75890959312-t7afplcua5hkkrldghsdd7nt7ej0bi1q.apps.googleusercontent.com',
     iosBundleId: 'com.example.layout2',
   );
 
@@ -87,5 +89,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'pasta-shop-5ca1c.firebasestorage.app',
     measurementId: 'G-12TLC9NVH0',
   );
-
 }

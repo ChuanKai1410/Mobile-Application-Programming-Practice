@@ -40,9 +40,7 @@ class ApiService {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'title': newTitle,
-      }),
+      body: jsonEncode(<String, String>{'title': newTitle}),
     );
 
     if (response.statusCode == 200) {

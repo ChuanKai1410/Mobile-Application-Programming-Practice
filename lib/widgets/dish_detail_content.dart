@@ -57,7 +57,12 @@ class _DishDetailContentState extends State<DishDetailContent> {
         return Column(
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(isTablet ? 16 : 10, 12, isTablet ? 16 : 10, 10),
+              margin: EdgeInsets.fromLTRB(
+                isTablet ? 16 : 10,
+                12,
+                isTablet ? 16 : 10,
+                10,
+              ),
               height: isTablet ? 300 : 220,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -78,7 +83,11 @@ class _DishDetailContentState extends State<DishDetailContent> {
                     return Container(
                       color: Colors.grey[300],
                       alignment: Alignment.center,
-                      child: const Icon(Icons.restaurant, size: 56, color: Colors.grey),
+                      child: const Icon(
+                        Icons.restaurant,
+                        size: 56,
+                        color: Colors.grey,
+                      ),
                     );
                   },
                 ),
@@ -86,7 +95,12 @@ class _DishDetailContentState extends State<DishDetailContent> {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(isTablet ? 16 : 10, 0, isTablet ? 16 : 10, 12),
+                padding: EdgeInsets.fromLTRB(
+                  isTablet ? 16 : 10,
+                  0,
+                  isTablet ? 16 : 10,
+                  12,
+                ),
                 child: _buildTabbedPanel(contentPadding: isTablet ? 16 : 12),
               ),
             ),
@@ -128,7 +142,11 @@ class _DishDetailContentState extends State<DishDetailContent> {
                         return Container(
                           color: Colors.grey[300],
                           alignment: Alignment.center,
-                          child: const Icon(Icons.restaurant, size: 64, color: Colors.grey),
+                          child: const Icon(
+                            Icons.restaurant,
+                            size: 64,
+                            color: Colors.grey,
+                          ),
                         );
                       },
                     ),
@@ -182,10 +200,7 @@ class _DishDetailContentState extends State<DishDetailContent> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.2),
-            blurRadius: 6,
-          ),
+          BoxShadow(color: Colors.grey.withValues(alpha: 0.2), blurRadius: 6),
         ],
       ),
       child: Column(
@@ -238,11 +253,15 @@ class _DishDetailContentState extends State<DishDetailContent> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? const Color(0xFFD32F2F) : Colors.transparent,
+                color: isSelected
+                    ? const Color(0xFFD32F2F)
+                    : Colors.transparent,
                 width: 3,
               ),
             ),
-            color: isSelected ? Colors.orange.withValues(alpha: 0.1) : Colors.transparent,
+            color: isSelected
+                ? Colors.orange.withValues(alpha: 0.1)
+                : Colors.transparent,
           ),
           child: Center(
             child: Text(
@@ -380,21 +399,22 @@ class _DishDetailContentState extends State<DishDetailContent> {
               const SizedBox(height: 16),
               ...widget.ingredients.map((ingredient) {
                 final isCategory = ingredient.name.endsWith(':');
-                
+
                 String displayQuantity = '';
                 if (ingredient.baseQuantity > 0) {
-                  final scaledQuantity = ingredient.baseQuantity * appState.servingSize;
-                  
+                  final scaledQuantity =
+                      ingredient.baseQuantity * appState.servingSize;
+
                   String quantityStr = scaledQuantity.toString();
                   if (scaledQuantity == scaledQuantity.truncateToDouble()) {
                     quantityStr = scaledQuantity.truncate().toString();
                   }
-                  
+
                   displayQuantity = '$quantityStr ${ingredient.unit} ';
                 }
-                
+
                 final displayText = '$displayQuantity${ingredient.name}'.trim();
-                
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
@@ -419,8 +439,12 @@ class _DishDetailContentState extends State<DishDetailContent> {
                           displayText,
                           style: TextStyle(
                             fontSize: isCategory ? 16 : 15,
-                            fontWeight: isCategory ? FontWeight.bold : FontWeight.w500,
-                            color: isCategory ? const Color(0xFFD32F2F) : const Color(0xFF424242),
+                            fontWeight: isCategory
+                                ? FontWeight.bold
+                                : FontWeight.w500,
+                            color: isCategory
+                                ? const Color(0xFFD32F2F)
+                                : const Color(0xFF424242),
                           ),
                         ),
                       ),
@@ -493,8 +517,12 @@ class _DishDetailContentState extends State<DishDetailContent> {
                       step,
                       style: TextStyle(
                         fontSize: isHeader ? 16 : 15,
-                        fontWeight: isHeader ? FontWeight.bold : FontWeight.w500,
-                        color: isHeader ? const Color(0xFFD32F2F) : const Color(0xFF424242),
+                        fontWeight: isHeader
+                            ? FontWeight.bold
+                            : FontWeight.w500,
+                        color: isHeader
+                            ? const Color(0xFFD32F2F)
+                            : const Color(0xFF424242),
                         height: 1.4,
                       ),
                     ),

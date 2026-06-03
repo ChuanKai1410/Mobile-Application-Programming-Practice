@@ -19,10 +19,6 @@ class NetworkRecipe {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'userId': chefId,
-      'id': recipeId,
-      'title': recipeTitle,
-    };
+    return {'userId': chefId, 'id': recipeId, 'title': recipeTitle};
   }
 }

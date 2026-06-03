@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import '../widgets/recipe_image.dart';
 import 'checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
@@ -9,9 +10,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Cart'),
-      ),
+      appBar: AppBar(title: const Text('Your Cart')),
       body: Consumer<SpaghettiShopAppState>(
         builder: (context, appState, child) {
           if (appState.cart.isEmpty) {
@@ -43,11 +42,10 @@ class CartScreen extends StatelessWidget {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12),
-                              child: Image.asset(
-                                item.dish.imageAsset,
+                              child: RecipeImage(
+                                recipe: item.dish,
                                 width: 80,
                                 height: 80,
-                                fit: BoxFit.cover,
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -127,10 +125,7 @@ class CartScreen extends StatelessWidget {
                         children: [
                           const Text(
                             'Total',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                           Text(
                             'RM${appState.totalCartPrice.toStringAsFixed(2)}',
@@ -153,9 +148,14 @@ class CartScreen extends StatelessWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 16),
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
                         ),
-                        child: const Text('Check out', style: TextStyle(fontSize: 18)),
+                        child: const Text(
+                          'Check out',
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ],
                   ),

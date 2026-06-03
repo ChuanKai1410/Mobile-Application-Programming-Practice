@@ -13,16 +13,17 @@ class WebSocketService {
     "Recipe likes updated: 1500 people love Spicy Arrabbiata.",
     "Trending: Creamy Garlic Pasta is the dish of the day!",
     "User 'PastaLover99' just saved your recipe.",
-    "Alert: Tomato prices are down, time for al Pomodoro!"
+    "Alert: Tomato prices are down, time for al Pomodoro!",
   ];
 
   final _random = Random();
 
   void connect() {
     _controller.add("Connected to live recipe stream...");
-    
+
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      final randomMessage = _simulatedMessages[_random.nextInt(_simulatedMessages.length)];
+      final randomMessage =
+          _simulatedMessages[_random.nextInt(_simulatedMessages.length)];
       _controller.add(randomMessage);
     });
   }

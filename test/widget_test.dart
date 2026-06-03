@@ -1,30 +1,28 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:pasta_shop/main.dart';
+import 'package:pasta_shop/models/spaghetti_dish.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp(clientId: ''));
+  test('SpaghettiDish stores Firebase recipe fields', () {
+    final recipe = SpaghettiDish(
+      id: 'recipe-1',
+      name: 'Carbonara',
+      description: 'Creamy pasta',
+      category: 'Creamy',
+      reviews: '0 Reviews',
+      prepTime: '10 min',
+      cookTime: '15 min',
+      feeds: '2',
+      price: 'RM14.50',
+      ingredients: const ['spaghetti', 'egg', 'cheese'],
+      method: const ['Boil pasta', 'Mix sauce'],
+      imageUrl: 'https://example.com/carbonara.jpg',
+      isVegetarian: false,
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(recipe.id, 'recipe-1');
+    expect(recipe.category, 'Creamy');
+    expect(recipe.ingredients, hasLength(3));
+    expect(recipe.method, contains('Mix sauce'));
+    expect(recipe.imageSource, recipe.imageUrl);
   });
 }

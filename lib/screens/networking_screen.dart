@@ -65,7 +65,11 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
   Future<void> _createRecipe() async {
     _setLoading(true);
     try {
-      final newRecipe = NetworkRecipe(chefId: 99, recipeId: 0, recipeTitle: 'New Truffle Pasta');
+      final newRecipe = NetworkRecipe(
+        chefId: 99,
+        recipeId: 0,
+        recipeTitle: 'New Truffle Pasta',
+      );
       final created = await _apiService.createRecipe(newRecipe);
       setState(() => _currentRecipe = created);
       _showSnackBar('Created recipe successfully!');
@@ -78,7 +82,7 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
 
   Future<void> _updateRecipe() async {
     if (_currentRecipe == null) return;
-    
+
     showDialog(
       context: context,
       builder: (context) {
@@ -89,7 +93,8 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
             child: TextFormField(
               controller: _updateController,
               decoration: const InputDecoration(labelText: 'New Title'),
-              validator: (val) => val == null || val.isEmpty ? 'Cannot be empty' : null,
+              validator: (val) =>
+                  val == null || val.isEmpty ? 'Cannot be empty' : null,
             ),
           ),
           actions: [
@@ -103,7 +108,10 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
                   Navigator.pop(context);
                   _setLoading(true);
                   try {
-                    final updated = await _apiService.updateRecipe(_currentRecipe!.recipeId, _updateController.text);
+                    final updated = await _apiService.updateRecipe(
+                      _currentRecipe!.recipeId,
+                      _updateController.text,
+                    );
                     setState(() => _currentRecipe = updated);
                     _showSnackBar('Updated recipe successfully!');
                   } catch (e) {
@@ -117,7 +125,7 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
             ),
           ],
         );
-      }
+      },
     );
   }
 
@@ -130,14 +138,17 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
         title: const Text('Confirm Delete'),
         content: const Text('Are you sure you want to delete this recipe?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () => Navigator.pop(context, true), 
-            child: const Text('Delete')
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
           ),
         ],
-      )
+      ),
     );
 
     if (confirm == true) {
@@ -155,7 +166,9 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
   }
 
   void _showSnackBar(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.green));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.green));
   }
 
   @override
@@ -171,10 +184,13 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 color: Colors.red.shade100,
-                child: Text('Error: $_errorMessage', style: const TextStyle(color: Colors.red)),
+                child: Text(
+                  'Error: $_errorMessage',
+                  style: const TextStyle(color: Colors.red),
+                ),
               ),
             const SizedBox(height: 16),
-            
+
             // HTTP Actions
             Wrap(
               spacing: 8,
@@ -192,39 +208,60 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
                   label: const Text('POST'),
                 ),
                 ElevatedButton.icon(
-                  onPressed: _isLoading || _currentRecipe == null ? null : _updateRecipe,
+                  onPressed: _isLoading || _currentRecipe == null
+                      ? null
+                      : _updateRecipe,
                   icon: const Icon(Icons.edit),
                   label: const Text('PUT/PATCH'),
                 ),
                 ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade100),
-                  onPressed: _isLoading || _currentRecipe == null ? null : _deleteRecipe,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red.shade100,
+                  ),
+                  onPressed: _isLoading || _currentRecipe == null
+                      ? null
+                      : _deleteRecipe,
                   icon: const Icon(Icons.delete, color: Colors.red),
-                  label: const Text('DELETE', style: TextStyle(color: Colors.red)),
+                  label: const Text(
+                    'DELETE',
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 24),
-            
+
             // Display Recipe
             if (_isLoading)
               const Center(child: CircularProgressIndicator())
             else if (_currentRecipe != null)
               Card(
                 elevation: 4,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Recipe ID: ${_currentRecipe!.recipeId}', style: const TextStyle(color: Colors.grey)),
-                      const SizedBox(height: 8),
-                      Text('Chef ID: ${_currentRecipe!.chefId}', style: const TextStyle(color: Colors.grey)),
+                      Text(
+                        'Recipe ID: ${_currentRecipe!.recipeId}',
+                        style: const TextStyle(color: Colors.grey),
+                      ),
                       const SizedBox(height: 8),
                       Text(
-                        _currentRecipe!.recipeTitle, 
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFD32F2F))
+                        'Chef ID: ${_currentRecipe!.chefId}',
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _currentRecipe!.recipeTitle,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFD32F2F),
+                        ),
                       ),
                     ],
                   ),
@@ -232,10 +269,10 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
               )
             else
               const Center(child: Text('No recipe data. Tap GET to fetch.')),
-            
+
             const SizedBox(height: 32),
             const Divider(),
-            
+
             // WebSocket Section
             const Text(
               'Live Feed (WebSocket Simulation)',
@@ -272,7 +309,10 @@ class _NetworkingScreenState extends State<NetworkingScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
                       '> ${_liveUpdates[index]}',
-                      style: const TextStyle(color: Colors.greenAccent, fontFamily: 'monospace'),
+                      style: const TextStyle(
+                        color: Colors.greenAccent,
+                        fontFamily: 'monospace',
+                      ),
                     ),
                   );
                 },

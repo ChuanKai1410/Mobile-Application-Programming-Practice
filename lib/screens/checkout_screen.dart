@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import '../widgets/recipe_image.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -12,7 +13,10 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   bool _isProcessing = false;
 
-  Future<void> _handleCheckout(BuildContext context, SpaghettiShopAppState appState) async {
+  Future<void> _handleCheckout(
+    BuildContext context,
+    SpaghettiShopAppState appState,
+  ) async {
     setState(() {
       _isProcessing = true;
     });
@@ -25,7 +29,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           barrierDismissible: false,
           builder: (context) => AlertDialog(
             title: const Text('Order Confirmed!'),
-            content: const Text('Your order has been successfully placed and saved.'),
+            content: const Text(
+              'Your order has been successfully placed and saved.',
+            ),
             actions: [
               TextButton(
                 onPressed: () {
@@ -39,9 +45,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to place order: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to place order: $e')));
       }
     } finally {
       if (mounted) {
@@ -57,9 +63,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final appState = context.watch<SpaghettiShopAppState>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Checkout Summary'),
-      ),
+      appBar: AppBar(title: const Text('Checkout Summary')),
       body: Column(
         children: [
           Expanded(
@@ -80,11 +84,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.asset(
-                            item.dish.imageAsset,
+                          child: RecipeImage(
+                            recipe: item.dish,
                             width: 60,
                             height: 60,
-                            fit: BoxFit.cover,
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -164,7 +167,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: _isProcessing ? null : () => _handleCheckout(context, appState),
+                    onPressed: _isProcessing
+                        ? null
+                        : () => _handleCheckout(context, appState),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
@@ -172,9 +177,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ? const SizedBox(
                             width: 24,
                             height: 24,
-                            child: CircularProgressIndicator(color: Colors.white),
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
                           )
-                        : const Text('Confirm Order', style: TextStyle(fontSize: 18)),
+                        : const Text(
+                            'Confirm Order',
+                            style: TextStyle(fontSize: 18),
+                          ),
                   ),
                 ],
               ),

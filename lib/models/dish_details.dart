@@ -4,10 +4,7 @@ class DishDetails {
   final List<Ingredient> ingredients;
   final List<String> method;
 
-  const DishDetails({
-    required this.ingredients,
-    required this.method,
-  });
+  const DishDetails({required this.ingredients, required this.method});
 }
 
 final aglioOlioDetails = DishDetails(
@@ -15,10 +12,22 @@ final aglioOlioDetails = DishDetails(
     const Ingredient(name: 'spaghetti', baseQuantity: 300, unit: 'g'),
     const Ingredient(name: 'cloves of garlic', baseQuantity: 4, unit: ''),
     const Ingredient(name: 'red pepperoni', baseQuantity: 2, unit: ''),
-    const Ingredient(name: 'bunch of flat-leaf parsley', baseQuantity: 1, unit: ''),
-    const Ingredient(name: 'olive oil or neutral vegetable oil', baseQuantity: 60, unit: 'ml'),
+    const Ingredient(
+      name: 'bunch of flat-leaf parsley',
+      baseQuantity: 1,
+      unit: '',
+    ),
+    const Ingredient(
+      name: 'olive oil or neutral vegetable oil',
+      baseQuantity: 60,
+      unit: 'ml',
+    ),
     const Ingredient(name: 'Sea salt and pepper', baseQuantity: 0, unit: ''),
-    const Ingredient(name: 'Optional: grated Parmesan cheese', baseQuantity: 0, unit: ''),
+    const Ingredient(
+      name: 'Optional: grated Parmesan cheese',
+      baseQuantity: 0,
+      unit: '',
+    ),
   ],
   method: [
     'Wash the parsley, shake dry, pluck off the leaves and chop.',
@@ -41,19 +50,43 @@ final tomatoDetails = DishDetails(
     const Ingredient(name: 'Spaghetti', baseQuantity: 0, unit: ''),
     const Ingredient(name: 'tomatoes', baseQuantity: 5, unit: ''),
     const Ingredient(name: 'oil', baseQuantity: 1, unit: 'tbsp'),
-    const Ingredient(name: 'finely chopped garlic', baseQuantity: 1, unit: 'tbsp'),
+    const Ingredient(
+      name: 'finely chopped garlic',
+      baseQuantity: 1,
+      unit: 'tbsp',
+    ),
     const Ingredient(name: 'red chili flakes', baseQuantity: 2, unit: 'tsp'),
     const Ingredient(name: 'finely chopped onion', baseQuantity: 1, unit: ''),
-    const Ingredient(name: 'Finely chopped capsicum', baseQuantity: 0, unit: ''),
+    const Ingredient(
+      name: 'Finely chopped capsicum',
+      baseQuantity: 0,
+      unit: '',
+    ),
     const Ingredient(name: 'Finely chopped carrot', baseQuantity: 0, unit: ''),
     const Ingredient(name: 'salt', baseQuantity: 0.5, unit: 'tsp'),
     const Ingredient(name: 'red chili powder', baseQuantity: 1, unit: 'tsp'),
-    const Ingredient(name: 'black pepper powder', baseQuantity: 0.5, unit: 'tsp'),
-    const Ingredient(name: 'mixed herbs seasoning', baseQuantity: 1, unit: 'tsp'),
+    const Ingredient(
+      name: 'black pepper powder',
+      baseQuantity: 0.5,
+      unit: 'tsp',
+    ),
+    const Ingredient(
+      name: 'mixed herbs seasoning',
+      baseQuantity: 1,
+      unit: 'tsp',
+    ),
     const Ingredient(name: 'Basil leaves', baseQuantity: 0, unit: ''),
     const Ingredient(name: 'Sugar', baseQuantity: 0, unit: ''),
-    const Ingredient(name: 'Tomato ketchup (optional)', baseQuantity: 0, unit: ''),
-    const Ingredient(name: 'Fresh cream/fresh cheese', baseQuantity: 0, unit: ''),
+    const Ingredient(
+      name: 'Tomato ketchup (optional)',
+      baseQuantity: 0,
+      unit: '',
+    ),
+    const Ingredient(
+      name: 'Fresh cream/fresh cheese',
+      baseQuantity: 0,
+      unit: '',
+    ),
   ],
   method: [
     'Boil water with salt in a large pot.',
@@ -78,13 +111,29 @@ final creamyGarlicDetails = DishDetails(
     const Ingredient(name: 'olive oil', baseQuantity: 2, unit: 'teaspoons'),
     const Ingredient(name: 'garlic cloves, minced', baseQuantity: 4, unit: ''),
     const Ingredient(name: 'butter', baseQuantity: 2, unit: 'tablespoons'),
-    const Ingredient(name: 'chicken broth (or more as needed)', baseQuantity: 3, unit: 'cups'),
-    const Ingredient(name: 'ground black pepper', baseQuantity: 0.5, unit: 'teaspoon'),
+    const Ingredient(
+      name: 'chicken broth (or more as needed)',
+      baseQuantity: 3,
+      unit: 'cups',
+    ),
+    const Ingredient(
+      name: 'ground black pepper',
+      baseQuantity: 0.5,
+      unit: 'teaspoon',
+    ),
     const Ingredient(name: 'salt', baseQuantity: 0.25, unit: 'teaspoon'),
     const Ingredient(name: 'spaghetti', baseQuantity: 0.5, unit: 'pound'),
-    const Ingredient(name: 'grated Parmesan cheese', baseQuantity: 1, unit: 'cup'),
+    const Ingredient(
+      name: 'grated Parmesan cheese',
+      baseQuantity: 1,
+      unit: 'cup',
+    ),
     const Ingredient(name: 'heavy cream', baseQuantity: 0.75, unit: 'cup'),
-    const Ingredient(name: 'dried parsley', baseQuantity: 1.5, unit: 'tablespoons'),
+    const Ingredient(
+      name: 'dried parsley',
+      baseQuantity: 1.5,
+      unit: 'tablespoons',
+    ),
   ],
   method: [
     'Gather all ingredients.',
@@ -105,13 +154,21 @@ final spicyDetails = DishDetails(
   ingredients: [
     const Ingredient(name: 'For Pasta:', baseQuantity: 0, unit: ''),
     const Ingredient(name: 'salt', baseQuantity: 1, unit: 'tbsp'),
-    const Ingredient(name: 'penne pasta (or spaghetti)', baseQuantity: 2, unit: 'cups'),
+    const Ingredient(
+      name: 'penne pasta (or spaghetti)',
+      baseQuantity: 2,
+      unit: 'cups',
+    ),
     const Ingredient(name: 'For Sauce:', baseQuantity: 0, unit: ''),
     const Ingredient(name: 'olive oil', baseQuantity: 4, unit: 'tbsp'),
     const Ingredient(name: 'butter', baseQuantity: 2, unit: 'tbsp'),
     const Ingredient(name: 'cloves garlic (minced)', baseQuantity: 4, unit: ''),
     const Ingredient(name: 'chili flakes', baseQuantity: 1, unit: 'tsp'),
-    const Ingredient(name: 'small onion (finely chopped)', baseQuantity: 1, unit: ''),
+    const Ingredient(
+      name: 'small onion (finely chopped)',
+      baseQuantity: 1,
+      unit: '',
+    ),
     const Ingredient(name: 'tomato paste', baseQuantity: 0.5, unit: 'cup'),
     const Ingredient(name: 'heavy cream', baseQuantity: 1, unit: 'cup'),
     const Ingredient(name: 'salt', baseQuantity: 0.25, unit: 'tsp'),
@@ -148,4 +205,3 @@ final spicyDetails = DishDetails(
     'Serve on a plate with grated parmesan cheese on top.',
   ],
 );
-

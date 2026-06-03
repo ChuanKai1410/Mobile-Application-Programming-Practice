@@ -12,7 +12,7 @@ class SerializationScreen extends StatefulWidget {
 
 class _SerializationScreenState extends State<SerializationScreen> {
   final SerializationService _service = SerializationService();
-  
+
   // Single Serialization state
   final PastaRecipe _sampleRecipe = PastaRecipe(
     id: 'r_101',
@@ -22,7 +22,7 @@ class _SerializationScreenState extends State<SerializationScreen> {
     chefName: 'Chef Mario',
     rating: 4.8,
   );
-  
+
   String _jsonString = '';
   PastaRecipe? _deserializedRecipe;
 
@@ -40,7 +40,9 @@ class _SerializationScreenState extends State<SerializationScreen> {
 
   void _serialize() {
     setState(() {
-      _jsonString = const JsonEncoder.withIndent('  ').convert(_sampleRecipe.toJson());
+      _jsonString = const JsonEncoder.withIndent(
+        '  ',
+      ).convert(_sampleRecipe.toJson());
     });
   }
 
@@ -60,10 +62,10 @@ class _SerializationScreenState extends State<SerializationScreen> {
     });
 
     final stopwatch = Stopwatch()..start();
-    
+
     // Perform parsing in background isolate
     final result = await _service.parseJsonBackground(_largeJson);
-    
+
     stopwatch.stop();
 
     setState(() {
@@ -84,10 +86,10 @@ class _SerializationScreenState extends State<SerializationScreen> {
     await Future.delayed(const Duration(milliseconds: 100));
 
     final stopwatch = Stopwatch()..start();
-    
+
     // Perform parsing in main thread
     final result = _service.parseJsonMainThread(_largeJson);
-    
+
     stopwatch.stop();
 
     setState(() {
@@ -106,91 +108,139 @@ class _SerializationScreenState extends State<SerializationScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text('Part 1: JSON Serialization', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text(
+              'Part 1: JSON Serialization',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 16),
-            
+
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Original Object:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text(
+                      'Original Object:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     Text(_sampleRecipe.toString()),
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ElevatedButton(onPressed: _serialize, child: const Text('To JSON')),
-                        ElevatedButton(onPressed: _deserialize, child: const Text('From JSON')),
+                        ElevatedButton(
+                          onPressed: _serialize,
+                          child: const Text('To JSON'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _deserialize,
+                          child: const Text('From JSON'),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16),
                     if (_jsonString.isNotEmpty) ...[
-                      const Text('Serialized JSON:', style: TextStyle(fontWeight: FontWeight.bold)),
+                      const Text(
+                        'Serialized JSON:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       Container(
                         padding: const EdgeInsets.all(8),
                         color: Colors.grey.shade200,
-                        child: Text(_jsonString, style: const TextStyle(fontFamily: 'monospace')),
+                        child: Text(
+                          _jsonString,
+                          style: const TextStyle(fontFamily: 'monospace'),
+                        ),
                       ),
                     ],
                     const SizedBox(height: 16),
                     if (_deserializedRecipe != null) ...[
-                      const Text('Deserialized Object:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text(_deserializedRecipe.toString(), style: const TextStyle(color: Colors.green)),
+                      const Text(
+                        'Deserialized Object:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        _deserializedRecipe.toString(),
+                        style: const TextStyle(color: Colors.green),
+                      ),
                     ],
                   ],
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 32),
             const Divider(),
             const SizedBox(height: 16),
-            
-            const Text('Part 2: Background Parsing (compute)', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+
+            const Text(
+              'Part 2: Background Parsing (compute)',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             const Text(
               'Parsing a massive JSON file (5000 items) on the Main Thread causes UI lag. '
               'Using compute() runs it in a background isolate, keeping the UI smooth.',
             ),
             const SizedBox(height: 16),
-            
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.orange.shade100),
-                  onPressed: _isParsing ? null : _parseInMainThread, 
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange.shade100,
+                  ),
+                  onPressed: _isParsing ? null : _parseInMainThread,
                   icon: const Icon(Icons.warning, color: Colors.orange),
-                  label: const Text('Main Thread', style: TextStyle(color: Colors.orange)),
+                  label: const Text(
+                    'Main Thread',
+                    style: TextStyle(color: Colors.orange),
+                  ),
                 ),
                 ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade100),
-                  onPressed: _isParsing ? null : _parseInBackground, 
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade100,
+                  ),
+                  onPressed: _isParsing ? null : _parseInBackground,
                   icon: const Icon(Icons.speed, color: Colors.green),
-                  label: const Text('Background', style: TextStyle(color: Colors.green)),
+                  label: const Text(
+                    'Background',
+                    style: TextStyle(color: Colors.green),
+                  ),
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 24),
             Center(
-              child: _isParsing 
-                ? const CircularProgressIndicator() 
-                : Text('Duration: $_parseDuration', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              child: _isParsing
+                  ? const CircularProgressIndicator()
+                  : Text(
+                      'Duration: $_parseDuration',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
             ),
-            
+
             const SizedBox(height: 16),
             if (_parsedRecipes.isNotEmpty)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Parsed ${_parsedRecipes.length} recipes successfully!', style: const TextStyle(color: Colors.green)),
+                  Text(
+                    'Parsed ${_parsedRecipes.length} recipes successfully!',
+                    style: const TextStyle(color: Colors.green),
+                  ),
                   const SizedBox(height: 8),
                   Container(
                     height: 200,
-                    decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
                     child: ListView.builder(
                       itemCount: 10, // only show first 10
                       itemBuilder: (context, index) {
@@ -203,7 +253,10 @@ class _SerializationScreenState extends State<SerializationScreen> {
                       },
                     ),
                   ),
-                  const Text('Showing top 10 results...', style: TextStyle(fontStyle: FontStyle.italic)),
+                  const Text(
+                    'Showing top 10 results...',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
                 ],
               ),
           ],

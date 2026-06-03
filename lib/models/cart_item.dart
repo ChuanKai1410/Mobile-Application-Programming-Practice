@@ -4,8 +4,5 @@ class CartItem {
   final SpaghettiDish dish;
   int amount;
 
-  CartItem({
-    required this.dish,
-    this.amount = 1,
-  });
+  CartItem({required this.dish, this.amount = 1});
 }

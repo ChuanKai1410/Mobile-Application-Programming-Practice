@@ -26,13 +26,17 @@ class ResponsiveAuthWrapper extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final isWide = constraints.maxWidth > 800;
-                
+
                 final brandingContent = Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.restaurant, size: 80, color: Color(0xFFD32F2F)),
+                    const Icon(
+                      Icons.restaurant,
+                      size: 80,
+                      color: Color(0xFFD32F2F),
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       title,
@@ -77,7 +81,9 @@ class ResponsiveAuthWrapper extends StatelessWidget {
                                   color: Colors.white,
                                   padding: const EdgeInsets.all(32.0),
                                   child: Theme(
-                                    data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
+                                    data: Theme.of(context).copyWith(
+                                      scaffoldBackgroundColor: Colors.white,
+                                    ),
                                     child: child,
                                   ),
                                 ),
@@ -111,7 +117,9 @@ class ResponsiveAuthWrapper extends StatelessWidget {
                             SizedBox(
                               height: 550,
                               child: Theme(
-                                data: Theme.of(context).copyWith(scaffoldBackgroundColor: Colors.white),
+                                data: Theme.of(context).copyWith(
+                                  scaffoldBackgroundColor: Colors.white,
+                                ),
                                 child: child,
                               ),
                             ),
